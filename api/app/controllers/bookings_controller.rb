@@ -13,7 +13,9 @@ class BookingsController < ApplicationController
     def create        # POST /bookings
         @booking = Booking.new(booking_params)
         if @booking.save
-            render json: @booking   
+            Mission.create(listing_id: @booking.listing_id, mission_type: "first_checkin", date: @booking.start_date, price: 10)
+            Mission.create(listing_id: @booking.listing_id, mission_type: "last_checkout", date: @booking.end_date, price: 10)
+            render json: {booking: @booking, msg: "booking and missions first_checkin and last_checkout created"}  
         else 
             render json: {msg: "booking aborted"}
         end     
